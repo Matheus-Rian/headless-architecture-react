@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
 import { FilterButton } from "./components/FilterButton";
-import { ISmartphone, SmartphoneItem } from "./components/SmartphoneItem";
+import { SmartphoneItem } from "./components/SmartphoneItem";
+import { useSmartphones } from "./hooks/useSmartphones";
 
 function App() {
-  const [smartphones, setSmartphones] = useState<ISmartphone[]>([]);
-  const [storage, setStorage] = useState<string>();
-  const [manufacturer, setManufacturer] = useState<string>();
-
-
-  useEffect(() => {
-    fetch('http://localhost:3333/smartphones').then(async (res) => {
-      const data = await res.json();
-
-      console.log(data);
-
-      setSmartphones(data);
-    })
-  }, []);
+  const { smartphones, setManufacturer, setStorage } = useSmartphones();
 
   return (
     <div className="">
@@ -26,7 +13,7 @@ function App() {
         </h1>
 
         {/* <pre>{JSON.stringify({ manufacturer, storage }, null, 2)}</pre> */}
-        
+
         <div className="flex w-full space-x-6 mt-12">
           <div className="flex flex-col shadow items-center p-6 w-full">
             <label className="text-lg font-bold">Armazenamento</label>
@@ -50,7 +37,7 @@ function App() {
 
         <div className="flex flex-wrap justify-around space-y-12 mt-12">
           {
-            smartphones.map((smartphone) => (
+            smartphones?.map((smartphone) => (
               <SmartphoneItem key={smartphone.id} data={smartphone} />
             ))
           }
